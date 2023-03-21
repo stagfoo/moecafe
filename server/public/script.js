@@ -55,7 +55,7 @@ function normalizeTitle(s){
 // Define the animation loop function
 function animate() {
   // Clear the canvas
-
+  if( posts[currentImageIndex]){
   // Draw the current image on the canvas
     const image = new Image();
     image.onload = function () {
@@ -83,6 +83,7 @@ function animate() {
 
   // Request the next frame of the animation
   requestAnimationFrame(animate);
+  }
 }
 
 function next() {
@@ -98,12 +99,10 @@ async function startVideo(){
     posts = await fetch("/video").then((response) => {
       return response.json()
     })
-    document.body.querySelector('#console').innerHTML = JSON.stringify(posts);
     startSlideshow()
     result = posts;
     return result;
   } catch(err) {
-    document.body.innerHTML = `<h2>failed</h2>`
     console.error('err', err)
     result = err
   }
@@ -111,27 +110,32 @@ async function startVideo(){
 
 
 function recordCanvas(canvas, videoLength) {
-  const recordedChunks = [];
-  const recordedStream = new MediaStream(canvas.captureStream(25))
-  const mediaRecorder = new MediaRecorder(recordedStream, {
-    mimeType: "video/webm; codecs=vp9",
-  });
-  mediaRecorder.ondataavailable = (event) => {
-    recordedChunks.push(event.data);
+  try {
+    const recordedChunks = [];
+    const recordedStream = new MediaStream(canvas.captureStream(25))
+    const mediaRecorder = new MediaRecorder(recordedStream, {
+      mimeType: "video/webm; codecs=vp9",
+    });
+    mediaRecorder.ondataavailable = (event) => {
+      recordedChunks.push(event.data);
+    }
+    mediaRecorder.onstop = () => {
+      const url = URL.createObjectURL(
+        new Blob(recordedChunks, { type: "video/webm" })
+      );
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = "canvas-made.webm";
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+    };
+    mediaRecorder.start();
+    window.setTimeout(() => {
+      mediaRecorder.stop();
+    }, videoLength);
+  } catch(err) {
+    alert(err.message);
+    console.log(err);
   }
-  mediaRecorder.onstop = () => {
-    const url = URL.createObjectURL(
-      new Blob(recordedChunks, { type: "video/webm" })
-    );
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "canvas-made.webm";
-    anchor.click();
-    window.URL.revokeObjectURL(url);
-  };
-  mediaRecorder.start();
-  window.setTimeout(() => {
-    mediaRecorder.stop();
-  }, videoLength);
 }
 

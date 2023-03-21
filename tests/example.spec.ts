@@ -5,14 +5,10 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.goto('http://localhost:3000');
   await page.waitForSelector("#record-canvas")
   await page.waitForSelector("#download-snippet")
-  function logRequest(interceptedRequest) {
-    console.log('A request was made:', interceptedRequest.url())
-  }
-  page.on('request', logRequest);
   // A single handle.
-  await page.getByRole('button', { name: 'Download' }).click();
   const [download] = await Promise.all([
     page.waitForEvent('download'),
+    page.getByRole('button', { name: 'Download' }).click()
   ]);
   const path = await download.suggestedFilename() as string;
   await download.saveAs(path)
