@@ -109,11 +109,6 @@ async function startVideo(){
   }
 }
 
-setTimeout(() => {
-  if(!hasStarted) {
-    startVideo()
-  }
-}, 500)
 
 function recordCanvas(canvas, videoLength) {
   const recordedChunks = [];

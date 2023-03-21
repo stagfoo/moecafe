@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test';
 test('download canvas', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1080, height: 1920 });
   await page.goto('http://localhost:3000');
+  page.waitForSelector("#record-canvas")
+  page.waitForSelector("#download-snippet")
   const [download] = await Promise.all([
     page.waitForEvent('download'),
   ]);
