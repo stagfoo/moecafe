@@ -25,7 +25,7 @@ jobs:
     - name: 🎭 Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: 🧪 Run Playwright tests
-      run: npx playwright test
+      run: npx --node-options=--require=dotenv/config playwright test
     - uses: FedericoCarboni/setup-ffmpeg@v2
     - name: 🎹 Add Audio
       run: ffmpeg -i canvas-made.webm -c:v libvpx-vp9 -c:a libopus output.webm
