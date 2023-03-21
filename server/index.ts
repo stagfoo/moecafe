@@ -53,28 +53,39 @@ app.get('/', (req, res) => {
 });
 
 app.get('/video', async (req, res) => {
-  const reddit = new Reddit({
-    username: process.env.REDDIT_USERNAME,
-    password: process.env.REDDIT_PASSWORD,
-    appId:  process.env.APP_ID,
-    appSecret: process.env.APP_SECRET,
-    userAgent: 'MoeCafe/1.0.0'
-  })
-
-  const posts = await reddit.get('/r/Animemes/top', {
-    limit: 11,
-    is_video: false,
-    over_18: false
-  })
-  const filteredPosts = posts.data.children.filter(c => {
-    return !c.data.is_video &&  !c.data.over_18
-  });
-
-  console.log(filteredPosts)
-  res.send(shuffle(filteredPosts.map((c,i) => {
-    console.log(i, imageDownloader(c.data.url, i));
-    return normalizePosts(c.data, i)
-  })).splice(0, 11))
+  try {
+    const reddit = new Reddit({
+      username: process.env.REDDIT_USERNAME,
+      password: process.env.REDDIT_PASSWORD,
+      appId:  process.env.APP_ID,
+      appSecret: process.env.APP_SECRET,
+      userAgent: 'MoeCafe/1.0.0'
+    })
+  
+    const posts = await reddit.get('/r/Animemes/top', {
+      limit: 11,
+      is_video: false,
+      over_18: false
+    })
+    const filteredPosts = posts.data.children.filter(c => {
+      return !c.data.is_video &&  !c.data.over_18
+    });
+  
+    console.log(filteredPosts)
+    res.send(shuffle(filteredPosts.map((c,i) => {
+      console.log(i, imageDownloader(c.data.url, i));
+      return normalizePosts(c.data, i)
+    })).splice(0, 11))
+  } catch(err) {
+    console.error(err);
+    res.send([
+      {
+        image: `https://placehold.co/600x400?text=Reddit+failed`,
+        id: new Date().toISOString(),
+        title: 'failed to call reddit',
+      }
+    ])
+  }
 })
 
 app.listen(3000, () => console.log('Example app is listening on port 3000.'));
