@@ -6,6 +6,7 @@ const totalVideoLength = (60 * 1000) * 1.2
 let tick;
 // Set the current image index to 0
 let currentImageIndex = 0;
+let hasStarted = false;
 
 
 
@@ -16,6 +17,7 @@ function startSlideshow(){
       next()
     }, totalVideoLength/posts.length)
     recordCanvas(canvas, totalVideoLength);
+    hasStarted = true
   }, 0)
 }
 
@@ -97,15 +99,21 @@ function next() {
   }
 }
 
-document.getElementById("download-snippet").onclick = async () => {
+async function startVideo(){
   try {
     posts = await fetch("/video").then((response) => response.json())
     startSlideshow()
   } catch(err) {
     console.error('err', err)
-    alert('Network failed')
+    document.body.getElementsByTagName('canvas')[0].remove()
   }
-  };
+}
+
+setTimeout(() => {
+  if(!hasStarted) {
+    startVideo()
+  }
+}, 500)
 
 function recordCanvas(canvas, videoLength) {
   const recordedChunks = [];

@@ -4,9 +4,8 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1080, height: 1920 });
   await page.goto('http://localhost:3000');
   await page.waitForTimeout(500);
-  await page.click('#download-snippet')
   const [download] = await Promise.all([
-    page.waitForEvent('download')
+    page.waitForEvent('download'),
   ]);
   const path = await download.suggestedFilename() as string;
   await download.saveAs(path)
