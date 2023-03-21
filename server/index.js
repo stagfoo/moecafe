@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-app.post('/save', express.raw({type: "*/*", limit: '50mb'}), (req, res) => {
+app.post('/save', express.raw({type: "*/*", limit: '200mb'}), (req, res) => {
   const blobData = req.body; // assuming the blob data is sent in the request body
   const filename = 'canvas-made.webm'; // specify a filename for the saved blob
   // use fs.writeFile to save the blob data to a file
