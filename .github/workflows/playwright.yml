@@ -1,0 +1,39 @@
+name: Playwright Tests
+permissions:
+  contents: write
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: 🚚 Install Dependencies
+      run: npm ci
+    - name: 🎭 Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: 🧪 Run Playwright tests
+      run: npx playwright test
+    - uses: FedericoCarboni/setup-ffmpeg@v2
+    - name: 🎹 Add Audio
+      run: ffmpeg -y -i playwright-report/data/*.webm -i assets/bgm.mp3 -c:v copy -c:a libvorbis -map 0:v:0 -map 1:a:0 playwright-report/data/output_video.webm
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report
+        path: |
+          playwright-report/
+        retention-days: 1
+    - name: 📼 Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.run_id }}
+        files: |
+          playwright-report/data/output_video.webm
