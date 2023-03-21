@@ -75,10 +75,11 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 app.get('/video', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-    var reddit, posts, filteredPosts;
+    var reddit, posts, filteredPosts, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 2, , 3]);
                 reddit = new Reddit({
                     username: process.env.REDDIT_USERNAME,
                     password: process.env.REDDIT_PASSWORD,
@@ -101,7 +102,19 @@ app.get('/video', function (req, res) { return __awaiter(_this, void 0, void 0, 
                     console.log(i, imageDownloader(c.data.url, i));
                     return normalizePosts(c.data, i);
                 })).splice(0, 11));
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                console.error(err_1);
+                res.send([
+                    {
+                        image: "https://placehold.co/600x400?text=Reddit+failed",
+                        id: new Date().toISOString(),
+                        title: 'failed to call reddit'
+                    }
+                ]);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
