@@ -8,11 +8,8 @@ test('download canvas', async ({ page }, testInfo) => {
   page.on("console", (message) => {
       console.log(message);
   })
+  page.getByRole('button', { name: 'Download' }).click()
   // A single handle.
-  const [download] = await Promise.all([
-    page.waitForEvent('download'),
-    page.getByRole('button', { name: 'Download' }).click()
-  ]);
   const path = await download.suggestedFilename() as string;
   await download.saveAs(path)
   await testInfo.attach('canvas-video', {
