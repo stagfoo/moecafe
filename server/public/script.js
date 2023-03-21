@@ -88,10 +88,6 @@ function animate() {
 
 }
 
-
-
-
-
 function next() {
   currentImageIndex++;
   if (currentImageIndex >= posts.length) {
@@ -100,12 +96,19 @@ function next() {
 }
 
 async function startVideo(){
+  let result;
   try {
-    posts = await fetch("/video").then((response) => response.json())
+    posts = await fetch("/video").then((response) => {
+      document.body.querySelector('#console').innerHTML = `<h1>complete</h1>`
+      return response.json()
+    })
     startSlideshow()
+    result = posts;
+    return result;
   } catch(err) {
+    document.body.querySelector('#console').innerHTML = `<h2>failed</h2>`
     console.error('err', err)
-    document.body.getElementsByTagName('canvas')[0].remove()
+    result = err
   }
 }
 
