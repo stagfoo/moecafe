@@ -41,7 +41,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     video: {
       mode: 'on', 
-      size: { width: 1080, height: 1920 }
+      size: { width: 1080, height: 2048 }
     },
     acceptDownloads: true
   },

@@ -15,9 +15,10 @@ function startSlideshow(){
     setInterval(() => {
       next()
     }, totalVideoLength/posts.length)
+    document.body.querySelector('#console').innerHTML = JSON.stringify(posts)
     recordCanvas(canvas, totalVideoLength);
     hasStarted = true
-  }, 0)
+  }, 1000)
 }
 
 
@@ -34,6 +35,7 @@ f.load().then(function(font) {
   ctx.font = "50px title";
 });
 } catch (err) {
+  document.body.querySelector('#console').innerHTML = err.message
   console.error(err)
 }
 
@@ -107,6 +109,7 @@ async function startVideo(){
     return result;
   } catch(err) {
     console.error('err', err)
+    document.body.querySelector('#console').innerHTML = err.message
     result = err
   }
 }

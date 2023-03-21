@@ -16,6 +16,6 @@ test('download canvas', async ({ page }, testInfo) => {
     path
   }
   );
-  await page.waitForTimeout(60000);
+  await page.waitForTimeout(60000*5);
   await expect(page).toHaveTitle(/Moecafe/);
 });
