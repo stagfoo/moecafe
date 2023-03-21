@@ -8,6 +8,7 @@ test('download canvas', async ({ page }, testInfo) => {
   page.on("console", (message) => {
       console.log(message);
   })
+  await page.waitForTimeout(6000*60*1);
   page.getByRole('button', { name: 'Download' }).click()
   await page.waitForTimeout(6000*60*2);
   await expect(page).toHaveTitle(/Moecafe/);
