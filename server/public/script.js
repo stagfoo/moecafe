@@ -1,4 +1,3 @@
-var f = new FontFace('title', 'url(/font.ttf)');
 let posts = [];
 const canvas = document.getElementById("record-canvas");
 const ctx = canvas.getContext("2d");
@@ -22,7 +21,8 @@ function startSlideshow(){
 }
 
 
-
+try {
+var f = new FontFace('title', 'url(/font.ttf)');
 f.load().then(function(font) {
 
   // Ready to use the font in a canvas context
@@ -33,6 +33,9 @@ f.load().then(function(font) {
 
   ctx.font = "50px title";
 });
+} catch (err) {
+  console.error(err)
+}
 
 
 function createCenteredImage(ctx, id, y) {
@@ -114,7 +117,7 @@ function recordCanvas(canvas, videoLength) {
     const recordedChunks = [];
     const recordedStream = new MediaStream(canvas.captureStream(25))
     const mediaRecorder = new MediaRecorder(recordedStream, {
-      mimeType: "video/webm; codecs=vp9",
+      mimeType: "video/webm;codecs=vp9,opus",
     });
     mediaRecorder.ondataavailable = (event) => {
       recordedChunks.push(event.data);
@@ -134,7 +137,7 @@ function recordCanvas(canvas, videoLength) {
       mediaRecorder.stop();
     }, videoLength);
   } catch(err) {
-    alert(err.message);
+    document.body.querySelector('#console').innerHTML = err.message
     console.log(err);
   }
 }
