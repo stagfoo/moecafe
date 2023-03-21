@@ -98,8 +98,13 @@ function next() {
 }
 
 document.getElementById("download-snippet").onclick = async () => {
-  posts = await fetch("/video").then((response) => response.json())
-  startSlideshow()
+  try {
+    posts = await fetch("/video").then((response) => response.json())
+    startSlideshow()
+  } catch(err) {
+    console.error('err', err)
+    alert('Network failed')
+  }
   };
 
 function recordCanvas(canvas, videoLength) {
