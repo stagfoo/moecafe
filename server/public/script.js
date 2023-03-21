@@ -6,7 +6,9 @@ let tick;
 // Set the current image index to 0
 let currentImageIndex = 0;
 let hasStarted = false;
-
+    posts = await fetch("/video").then((response) => {
+      return response.json()
+    })
 
 
 function startSlideshow(){
@@ -101,9 +103,6 @@ function next() {
 async function startVideo(){
   let result;
   try {
-    posts = await fetch("/video").then((response) => {
-      return response.json()
-    })
     startSlideshow()
     result = posts;
     return result;
