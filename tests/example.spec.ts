@@ -5,6 +5,10 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.goto('http://localhost:3000');
   page.waitForSelector("#record-canvas")
   page.waitForSelector("#download-snippet")
+  // A single handle.
+  const posts = await page.evaluate('window.posts');
+  console.log(posts);
+  await page.evaluate('window.startVideo()');
   const [download] = await Promise.all([
     page.waitForEvent('download'),
   ]);
@@ -14,6 +18,6 @@ test('download canvas', async ({ page }, testInfo) => {
     path
   }
   );
-  await page.waitForTimeout(70000);
+  await page.waitForTimeout(1000);
   await expect(page).toHaveTitle(/Moecafe/);
 });
