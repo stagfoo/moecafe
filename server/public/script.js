@@ -8,19 +8,16 @@ let tick;
 let currentImageIndex = 0;
 
 
-fetch("/video")
-  .then((response) => response.json())
-  .then((data) => {
-    posts = data
-    animate();
-    //requestAnimation stack hack
-    setTimeout(() => {
-      setInterval(() => {
-         next()
-       }, totalVideoLength/posts.length)
-       recordCanvas(canvas, totalVideoLength);
-     }, 0)
-  });
+
+function startSlideshow(){
+  animate();
+  setTimeout(() => {
+    setInterval(() => {
+      next()
+    }, totalVideoLength/posts.length)
+    recordCanvas(canvas, totalVideoLength);
+  }, 0)
+}
 
 
 
@@ -58,29 +55,31 @@ function animate() {
   // Clear the canvas
 
   // Draw the current image on the canvas
-  const image = new Image();
-  image.onload = function () {
-    // Calculate the scaling factor for the image
-    const canFac = 1.2
-    const scaleFactor = Math.min((canvas.width/canFac) / image.width, (canvas.height/canFac) / image.height);
+  if(posts[currentImageIndex]) {
+    const image = new Image();
+    image.onload = function () {
+      // Calculate the scaling factor for the image
+      const canFac = 1.2
+      const scaleFactor = Math.min((canvas.width/canFac) / image.width, (canvas.height/canFac) / image.height);
 
-    // Calculate the centered position for the image
-    const dx = (canvas.width - image.width * scaleFactor) / 2;
-    const dy = (canvas.height - image.height * scaleFactor) / 2;
-    const finalWidth = image.width * scaleFactor;
-    const finalHeight = image.height * scaleFactor;
+      // Calculate the centered position for the image
+      const dx = (canvas.width - image.width * scaleFactor) / 2;
+      const dy = (canvas.height - image.height * scaleFactor) / 2;
+      const finalWidth = image.width * scaleFactor;
+      const finalHeight = image.height * scaleFactor;
 
-    // Draw the scaled and centered image on the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    createCenteredImage(ctx, 'bg', 0)
-    ctx.fillStyle = "white"
-    ctx.fillRect(dx, dy - 95, finalWidth, 100 );
-    ctx.drawImage(image, dx, dy, finalWidth, finalHeight);
-    ctx.fillStyle = "black"
-    
-    ctx.fillText(normalizeTitle(posts[currentImageIndex].title), dx+10, dy - 40); 
-  };
-  image.src = posts[currentImageIndex].image;
+      // Draw the scaled and centered image on the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      createCenteredImage(ctx, 'bg', 0)
+      ctx.fillStyle = "white"
+      ctx.fillRect(dx, dy - 95, finalWidth, 100 );
+      ctx.drawImage(image, dx, dy, finalWidth, finalHeight);
+      ctx.fillStyle = "black"
+      
+      ctx.fillText(normalizeTitle(posts[currentImageIndex].title), dx+10, dy - 40); 
+    };
+    image.src = posts[currentImageIndex].image;
+  }
 
   // Request the next frame of the animation
   requestAnimationFrame(animate);
@@ -98,8 +97,9 @@ function next() {
   }
 }
 
-document.getElementById("download-snippet").onclick = () => {
-    recordCanvas(canvas, totalVideoLength);
+document.getElementById("download-snippet").onclick = async () => {
+  posts = await fetch("/video").then((response) => response.json())
+  startSlideshow()
   };
 
 function recordCanvas(canvas, videoLength) {

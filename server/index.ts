@@ -4,7 +4,6 @@ const app = express();
 const path = require('path');
 const fs = require('fs') // Built-in filesystem package for Node.js
 const get = require('get')
-require('dotenv').config()
 
 // Set the public folder as the static directory
 app.use(express.static(path.join(__dirname, 'public')));
@@ -54,10 +53,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/video', async (req, res) => {
-
   const reddit = new Reddit({
-    username: process.env.USERNAME,
-    password: process.env.PASSWORD,
+    username: process.env.REDDIT_USERNAME,
+    password: process.env.REDDIT_PASSWORD,
     appId:  process.env.APP_ID,
     appSecret: process.env.APP_SECRET,
     userAgent: 'MoeCafe/1.0.0'

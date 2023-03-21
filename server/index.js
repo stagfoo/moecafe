@@ -41,8 +41,6 @@ var app = express();
 var path = require('path');
 var fs = require('fs'); // Built-in filesystem package for Node.js
 var get = require('get');
-require('dotenv').config();
-console.log(process.env);
 // Set the public folder as the static directory
 app.use(express.static(path.join(__dirname, 'public')));
 function normalizePosts(post, i) {
@@ -82,10 +80,10 @@ app.get('/video', function (req, res) { return __awaiter(_this, void 0, void 0, 
         switch (_a.label) {
             case 0:
                 reddit = new Reddit({
-                    username: 'moecafe5000',
-                    password: '4m8McvaQ7ZXciBn',
-                    appId: 'biWp0UXNB6Dz5vrfNvNbdA',
-                    appSecret: 'S7DEt2KZPllTFFeDX4RwlDbg2zbhUQ',
+                    username: process.env.REDDIT_USERNAME,
+                    password: process.env.REDDIT_PASSWORD,
+                    appId: process.env.APP_ID,
+                    appSecret: process.env.APP_SECRET,
                     userAgent: 'MoeCafe/1.0.0'
                 });
                 return [4 /*yield*/, reddit.get('/r/Animemes/top', {
