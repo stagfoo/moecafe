@@ -57,7 +57,6 @@ function animate() {
   // Clear the canvas
 
   // Draw the current image on the canvas
-  if(posts[currentImageIndex]) {
     const image = new Image();
     image.onload = function () {
       // Calculate the scaling factor for the image
@@ -81,11 +80,9 @@ function animate() {
       ctx.fillText(normalizeTitle(posts[currentImageIndex].title), dx+10, dy - 40); 
     };
     image.src = posts[currentImageIndex].image;
-  }
 
   // Request the next frame of the animation
   requestAnimationFrame(animate);
-
 }
 
 function next() {
@@ -99,14 +96,14 @@ async function startVideo(){
   let result;
   try {
     posts = await fetch("/video").then((response) => {
-      document.body.querySelector('#console').innerHTML = `<h1>complete</h1>`
       return response.json()
     })
+    document.body.querySelector('#console').innerHTML = JSON.stringify(posts);
     startSlideshow()
     result = posts;
     return result;
   } catch(err) {
-    document.body.querySelector('#console').innerHTML = `<h2>failed</h2>`
+    document.body.innerHTML = `<h2>failed</h2>`
     console.error('err', err)
     result = err
   }
