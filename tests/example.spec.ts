@@ -5,6 +5,9 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.goto('http://localhost:3000');
   await page.waitForSelector("#record-canvas")
   await page.waitForSelector("#download-snippet")
+  page.on("console", (message) => {
+      console.log(message);
+  })
   // A single handle.
   const [download] = await Promise.all([
     page.waitForEvent('download'),
