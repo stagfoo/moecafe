@@ -69,7 +69,7 @@ app.get('/video', async (req, res) => {
       userAgent: 'MoeCafe/1.0.0'
     })
 
-    const posts = await reddit.get('/r/Animemes/top', {
+    const posts = await reddit.get('/r/AnimalCrossing/top', {
       limit: 11,
       is_video: false,
       over_18: false
