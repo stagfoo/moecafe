@@ -5,9 +5,9 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.goto('http://localhost:3000');
   // wait for 1 second
   await page.waitForTimeout(500);
+  await page.click('#download-snippet')
   const [download] = await Promise.all([
     page.waitForEvent('download'), // wait for download to start
-    page.click('#download-snippet')
   ]);
   // wait for download to complete
   const path = await download.suggestedFilename() as string;
