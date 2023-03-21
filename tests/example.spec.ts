@@ -9,13 +9,9 @@ test('download canvas', async ({ page }, testInfo) => {
       console.log(message);
   })
   page.getByRole('button', { name: 'Download' }).click()
-  // A single handle.
-  const path = await download.suggestedFilename() as string;
-  await download.saveAs(path)
+  await page.waitForTimeout(6000*60*2);
   await testInfo.attach('canvas-video', {
-    path
+    'canvas-made.webm'
   }
-  );
-  await page.waitForTimeout(60000*5);
   await expect(page).toHaveTitle(/Moecafe/);
 });
