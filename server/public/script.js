@@ -126,6 +126,7 @@ function recordCanvas(canvas, videoLength) {
     }
     mediaRecorder.onstop = () => {
       const videoBlob = new Blob(recordedChunks, { type: "video/webm" })
+      localStorage.setItem('video', videoBlob)
       fetch('/save', {
         method: "POST",
         body: videoBlob
