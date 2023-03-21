@@ -126,14 +126,11 @@ function recordCanvas(canvas, videoLength) {
       recordedChunks.push(event.data);
     }
     mediaRecorder.onstop = () => {
-      const url = URL.createObjectURL(
-        new Blob(recordedChunks, { type: "video/webm" })
-      );
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = "canvas-made.webm";
-      anchor.click();
-      window.URL.revokeObjectURL(url);
+      const videoBlob = new Blob(recordedChunks, { type: "video/webm" })
+      fetch('/save', {
+        method: "POST",
+        body: videoBlob
+      });
     };
     mediaRecorder.start();
     window.setTimeout(() => {
@@ -144,4 +141,3 @@ function recordCanvas(canvas, videoLength) {
     console.log(err);
   }
 }
-
