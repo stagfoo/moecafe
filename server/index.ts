@@ -57,8 +57,8 @@ app.get('/video', async (req, res) => {
     const reddit = new Reddit({
       username: process.env.REDDIT_USERNAME,
       password: process.env.REDDIT_PASSWORD,
-      appId:  process.env.APP_ID,
-      appSecret: process.env.APP_SECRET,
+      appId:  process.env.REDDIT_APP_ID,
+      appSecret: process.env.REDDIT_APP_SECRET,
       userAgent: 'MoeCafe/1.0.0'
     })
   
