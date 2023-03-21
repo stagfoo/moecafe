@@ -3,7 +3,6 @@ import { test, expect } from '@playwright/test';
 test('download canvas', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1080, height: 1920 });
   await page.goto('http://localhost:3000');
-  await page.waitForTimeout(10000);
   const [download] = await Promise.all([
     page.waitForEvent('download'),
   ]);
@@ -13,6 +12,6 @@ test('download canvas', async ({ page }, testInfo) => {
     path
   }
   );
-  await page.waitForTimeout(60000);
+  await page.waitForTimeout(70000);
   await expect(page).toHaveTitle(/Moecafe/);
 });
