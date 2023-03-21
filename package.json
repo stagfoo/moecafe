@@ -4,7 +4,7 @@
   "description": "",
   "main": "server/index.js",
   "scripts": {
-    "start": "npm run run:server",
+    "start": "npm run run:local-server",
     "build:server": "tsc server/index.ts",
     "run:server": "node server/index.js",
     "run:local-server": "dotenv -- node server/index.js",
