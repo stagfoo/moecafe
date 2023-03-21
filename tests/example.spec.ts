@@ -10,8 +10,5 @@ test('download canvas', async ({ page }, testInfo) => {
   })
   page.getByRole('button', { name: 'Download' }).click()
   await page.waitForTimeout(6000*60*2);
-  await testInfo.attach('canvas-video', {
-    'canvas-made.webm'
-  })
   await expect(page).toHaveTitle(/Moecafe/);
 });
