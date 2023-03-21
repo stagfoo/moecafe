@@ -6,8 +6,7 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.waitForSelector("#record-canvas")
   await page.waitForSelector("#download-snippet")
   function logRequest(interceptedRequest) {
-    console.log('A request was made:', interceptedRequest.url()),
-    console.log('A request was made:', interceptedRequest)
+    console.log('A request was made:', interceptedRequest.url())
   }
   page.on('request', logRequest);
   // A single handle.

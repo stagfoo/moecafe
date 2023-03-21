@@ -13,8 +13,8 @@ jobs:
     env:
       REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
       REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
-      APP_ID: ${{ secrets.APP_ID }}
-      APP_SECRET: ${{ secrets.APP_SECRET }}
+      REDDIT_APP_ID: ${{ secrets.REDDIT_APP_ID }}
+      REDDIT_APP_SECRET: ${{ secrets.REDDIT_APP_SECRET }}
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -25,7 +25,7 @@ jobs:
     - name: 🎭 Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: 🧪 Run Playwright tests
-      run: npx --node-options=--require=dotenv/config playwright test
+      run: npx playwright test
     - uses: FedericoCarboni/setup-ffmpeg@v2
     - name: 🎹 Add Audio
       run: ffmpeg -i canvas-made.webm -c:v libvpx-vp9 -c:a libopus output.webm
