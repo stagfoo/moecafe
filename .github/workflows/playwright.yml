@@ -20,6 +20,8 @@ jobs:
     - uses: actions/setup-node@v3
       with:
         node-version: 19
+    - name: 🖼 download img
+      run: node ./server/download.js
     - name: 🚚 Install Dependencies
       run: npm ci
     - name: 🎭 Install Playwright Browsers
