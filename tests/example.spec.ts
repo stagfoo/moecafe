@@ -8,7 +8,7 @@ const jsonFile = `./server/public/${reddit}.json`;
 async function fetchRedditInformation(){
   await fetch(`https://www.reddit.com/r/${reddit}/top.json?t=day&limit=15`)
   .then(response => response.json())
-  .then(data => {
+  .then(async data => {
     const posts = data.data.children.map(child => child.data);
     const normalizedPosts = posts.filter(p => p.post_hint === "image").map(post => { 
       return {
@@ -18,18 +18,16 @@ async function fetchRedditInformation(){
         id: post.id,
       }
     })
-  Promise.all(normalizedPosts.map(p => {
-    fetch(p.url).then(async (res) => {
+  fs.writeFile(jsonFile, JSON.stringify(normalizedPosts), (err) => {
+    if (err) throw err;
+    console.log('Data saved to file');
+  });
+  await Promise.all(normalizedPosts.map(p => {
+    return fetch(p.url).then(async (res) => {
       const blob = await res.blob();
       return fs.writeFileSync(`./server/public/${p.id}.png`, Buffer.from( await blob.arrayBuffer() ));
     })
-  })).then(() => {
-    fs.writeFile(jsonFile, JSON.stringify(normalizedPosts), (err) => {
-      if (err) throw err;
-      console.log('Data saved to file');
-    });
-  })
-  .catch(error => console.error(error));
+  })).catch(error => console.error(error));
   })
 
   fs.readFile(jsonFile, 'utf8', (err, data) => {

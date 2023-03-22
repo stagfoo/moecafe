@@ -76,7 +76,6 @@ function animate() {
       
       ctx.fillText(normalizeTitle(posts[currentImageIndex].title), dx+10, dy - 40); 
     };
-    console.log('adding image', posts[currentImageIndex].image)
     image.src = posts[currentImageIndex].image;
 
   // Request the next frame of the animation
@@ -91,6 +90,9 @@ function next() {
     setTimeout(() => {
       document.body.querySelector('#console').innerHTML = `<div id="complete-video">( -3-)🎉</div>`
     }, 1000)
+  }
+  if(posts[currentImageIndex]){
+    console.log('adding image', posts[currentImageIndex].image)
   }
 }
 
