@@ -28,7 +28,7 @@ jobs:
       run: npx playwright test
     - uses: FedericoCarboni/setup-ffmpeg@v2
     - name: 🎹 Add Audio
-      run: ffmpeg -i canvas-made.webm -c:v libvpx-vp9 -c:a libopus output.webm
+      run: ffmpeg -i canvas-made.webm -i assets/bgm.mp3 -filter_complex "[0:a]volume=1[a];[1:a]volume=0.5[b];[a][b]amix=inputs=2" -c:v copy -c:a libopus output.webm
     - uses: actions/upload-artifact@v3
       if: always()
       with:
