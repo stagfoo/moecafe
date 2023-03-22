@@ -62,7 +62,7 @@ app.post('/save', express.raw({type: "*/*", limit: '200mb'}), (req, res) => {
 app.get('/video', async (req, res) => {
   try {
     
-const posts = await fetch("https://www.reddit.com/r/programming/top.json?t=week")
+const posts = await fetch("https://www.reddit.com/r/programming/top.json?t=week&limit=10&is_video=false&over_18=false")
   .then((response) => response.json())
   .catch((error) => console.error(error));
     const filteredPosts = posts.data.children.filter(c => {
