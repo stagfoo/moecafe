@@ -61,19 +61,10 @@ app.post('/save', express.raw({type: "*/*", limit: '200mb'}), (req, res) => {
 
 app.get('/video', async (req, res) => {
   try {
-    const reddit = new Reddit({
-      username: process.env.REDDIT_USERNAME,
-      password: process.env.REDDIT_PASSWORD,
-      appId: process.env.REDDIT_APP_ID,
-      appSecret: process.env.REDDIT_APP_SECRET,
-      userAgent: 'MoeCafe/1.0.0'
-    })
-
-    const posts = await reddit.get('/r/AnimalCrossing/top', {
-      limit: 11,
-      is_video: false,
-      over_18: false
-    })
+    
+const posts = await fetch("https://www.reddit.com/r/programming/top.json?t=week")
+  .then((response) => response.json())
+  .catch((error) => console.error(error));
     const filteredPosts = posts.data.children.filter(c => {
       return !c.data.is_video && !c.data.over_18
     });
