@@ -88,11 +88,12 @@ function next() {
   if (currentImageIndex >= posts.length) {
     clearInterval(tick);
     setTimeout(() => {
+      console.log('🌈 Completed')
       document.body.querySelector('#console').innerHTML = `<div id="complete-video">( -3-)🎉</div>`
     }, 1000)
   }
   if(posts[currentImageIndex]){
-    console.log('adding image', posts[currentImageIndex].image)
+    console.log('🌆 Added Meme', posts[currentImageIndex].image)
   }
 }
 
