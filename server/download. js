@@ -1,0 +1,56 @@
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
+(async () => {
+  try {
+    const response = await new Promise((resolve, reject) => {
+      const options = {
+        method: 'GET',
+        hostname: 'www.reddit.com',
+        path: '/r/programming/top.json?t=day',
+        headers: {
+          'User-Agent': 'Node.js/1.0'
+        }
+      };
+      const request = https.request(options, resolve);
+      request.on('error', reject);
+      request.end();
+    });
+
+    let data = '';
+    response.on('data', chunk => {
+      data += chunk;
+    });
+    response.on('end', async () => {
+      const imagePosts = JSON.parse(data).data.children.filter(post => post.data.post_hint === 'image');
+      const publicLinks = [];
+
+      for (const post of imagePosts) {
+        const imageUrl = post.data.url_overridden_by_dest;
+        const imageTitle = post.data.title;
+        const extension = path.extname(imageUrl);
+        const filename = `${imageTitle}${extension}`;
+        const filePath = path.join(__dirname, 'public', filename);
+        const writer = fs.createWriteStream(filePath);
+
+        const imageRequest = imageUrl.startsWith('https') ? https : http;
+        const imageResponse = await new Promise((resolve, reject) => {
+          const request = imageRequest.request(imageUrl, resolve);
+          request.on('error', reject);
+          request.end();
+        });
+        imageResponse.pipe(writer);
+
+        const publicLink = `https://example.com/public/${filename}`;
+        publicLinks.push({ title: imageTitle, link: publicLink });
+      }
+
+      const json = JSON.stringify(publicLinks, null, 2);
+      const jsonFilePath = path.join(__dirname, 'public', 'images.json');
+      fs.writeFileSync(jsonFilePath, json);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+})();
