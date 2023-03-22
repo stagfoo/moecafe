@@ -14,7 +14,6 @@ function startSlideshow(){
     setInterval(() => {
       next()
     }, totalVideoLength/posts.length)
-    document.body.querySelector('#console').innerHTML = JSON.stringify(posts)
     recordCanvas(canvas, totalVideoLength);
     hasStarted = true
   }, 1000)
@@ -22,17 +21,11 @@ function startSlideshow(){
 
 
 try {
-var f = new FontFace('title', 'url(/font.ttf)');
-f.load().then(function(font) {
-
-  // Ready to use the font in a canvas context
-  console.log('font ready');
-
-  // Add font on the html page
-  document.fonts.add(font);
-
-  ctx.font = "50px title";
-});
+  var f = new FontFace('title', 'url(/font.ttf)');
+  f.load().then(function(font) {
+    document.fonts.add(font);
+    ctx.font = "50px title";
+  });
 } catch (err) {
   document.body.querySelector('#console').innerHTML = err.message
   console.error(err)
@@ -83,6 +76,7 @@ function animate() {
       
       ctx.fillText(normalizeTitle(posts[currentImageIndex].title), dx+10, dy - 40); 
     };
+    console.log('adding image', posts[currentImageIndex].image)
     image.src = posts[currentImageIndex].image;
 
   // Request the next frame of the animation
@@ -94,11 +88,14 @@ function next() {
   currentImageIndex++;
   if (currentImageIndex >= posts.length) {
     clearInterval(tick);
+    setTimeout(() => {
+      document.body.querySelector('#console').innerHTML = `<div id="complete-video">( -3-)🎉</div>`
+    }, 1000)
   }
 }
 
 async function fetchPosts(){
-  posts = await fetch("/video").then((response) => {
+  posts = await fetch("/animemes.json").then((response) => {
     return response.json()
   })
 }
@@ -108,6 +105,7 @@ async function startVideo(){
   try {
     fetchPosts()
     startSlideshow()
+    console.log('posts', posts)
     result = posts;
     return result;
   } catch(err) {
