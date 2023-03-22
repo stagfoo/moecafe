@@ -2,10 +2,8 @@ name: Playwright Tests
 permissions:
   contents: write
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  schedule:
+    - cron: '20 4 * * 1,2,3,4,5'
 jobs:
   test:
     timeout-minutes: 60
@@ -40,5 +38,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.run_id }}
+        name: video-${{ github.run_id }}
         files: |
           output.webm
