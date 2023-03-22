@@ -9,7 +9,8 @@ test('download canvas', async ({ page }, testInfo) => {
   await page.waitForSelector("#record-canvas")
   await page.waitForSelector("#download-snippet")
   await page.evaluate(token => {
-    fetchPosts()
+    await fetchPosts()
+    console.log(posts)
   })
   await page.waitForLoadState('networkidle')
   await page.evaluate(token => {
