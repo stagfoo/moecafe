@@ -41,4 +41,4 @@ jobs:
       with:
         tag_name: ${{ github.run_id }}
         files: |
-          playwright-report/data/output_video.mkv
+          output.webm
