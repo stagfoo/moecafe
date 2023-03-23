@@ -3,7 +3,7 @@ permissions:
   contents: write
 on:
   schedule:
-    - cron: '* 1 * * *'
+    - cron: '* 16 * * *'
 jobs:
   test:
     timeout-minutes: 60
