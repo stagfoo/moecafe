@@ -38,6 +38,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ github.run_id }}
-        name: video-${{ github.run_id }}
+        name: Meme Comp | Barcode:${{ github.run_id }}
         files: |
           output.webm
