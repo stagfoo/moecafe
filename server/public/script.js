@@ -62,7 +62,7 @@ function animate() {
 
       // Calculate the centered position for the image
       const dx = (canvas.width - image.width * scaleFactor) / 2;
-      const dy = (canvas.height - image.height * scaleFactor) / 2;
+      const dy = 100 + (canvas.height - image.height * scaleFactor) / 2;
       const finalWidth = image.width * scaleFactor;
       const finalHeight = image.height * scaleFactor;
 
