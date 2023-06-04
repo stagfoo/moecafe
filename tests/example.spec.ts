@@ -6,7 +6,7 @@ const jsonFile = `./server/public/${reddit}.json`;
 
 
 async function fetchRedditInformation(){
-  await fetch(`https://www.reddit.com/r/${reddit}/top.json?t=day&limit=15`)
+  await fetch(`https://www.reddit.com/r/${reddit}/top.json?t=day&limit=10`)
   .then(response => response.json())
   .then(async data => {
     console.log('🍂 Fetching Memes')
