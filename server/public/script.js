@@ -1,7 +1,7 @@
 let posts = [];
 const canvas = document.getElementById("record-canvas");
 const ctx = canvas.getContext("2d");
-const totalVideoLength = (60 * 1000) * 1.2
+const totalVideoLength = (60 * 1000) - 5
 let tick;
 // Set the current image index to 0
 let currentImageIndex = 0;
